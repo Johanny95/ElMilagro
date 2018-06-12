@@ -53,6 +53,7 @@ function ingresar(){
 		}
 	}
 
+//SELECT JEFES
 	function cargarSelectJefes(id_select){
 		$.post(ruta+'selectJefes', function(data) {
 			$('#'+id_select).empty();
@@ -63,3 +64,32 @@ function ingresar(){
 			$('#'+id_select).append(fila);
 		},'json');
 	}
+
+	//BUSCAR MATERIAL POR CODIGO
+	function buscarMaterial(codigo){
+		$.ajax({
+			url: ruta+'buscarMaterial',
+			type: 'POST',
+			dataType: 'JSON',
+			data: {	codigo: codigo },
+		}).done(function(data) {
+			if(data.status){
+				$('#nombreEntrada').val(data.material[0].NOMBRE).attr('readonly', true);
+				$('#stockBodega').val(data.material[0].STOCK).attr('readonly', true);
+				$('#tipoStockEntrada').append('<option selected value="'+data.material.ID_TIPO_STOCK+'">'+data.material[0].NOMBRE_STOCK+'</option>').attr('readonly', true);
+				$('.stockDiv').removeClass('hidden').addClass('show');
+				$('#stockEntrada').val(1);
+				document.getElementById("stockEntrada").focus();
+			}else{
+				em_notify('Informativo',data.error,'info');
+				$('.stockDiv').removeClass('show').addClass('hidden');
+				$('#nombreEntrada').val('').attr('readonly', false);
+				$('#stockBodega').val('').attr('readonly', false);
+				$('#tipoStockEntrada').attr('readonly',false);
+				$('#tipoStockEntrada').val('0');
+				$('#stockEntrada').val(1);
+				document.getElementById("stockEntrada").focus();
+			}
+		});
+	}
+

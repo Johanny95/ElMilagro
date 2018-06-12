@@ -24,6 +24,32 @@ class Controller_usuario extends CI_Controller {
 		parent::__construct();
 		$this->load->model('model_usuario');
 	}
+
+	public function dashboard(){
+		if($this->session->userdata('usuario')>0){
+			$this->load->view('template/header');
+			$this->load->view('index');
+			$this->load->view('template/footer');
+		}else{
+			$this->load->view('template/login');
+		}
+	}
+
+	public function modulo_usuario(){
+		if($this->session->userdata('usuario')>0){
+			$this->load->view('template/header');
+			$this->load->view('ingresoUsuarios');
+			$this->load->view('template/footer');
+		}else{
+			$this->load->view('template/login');
+		}	
+	}
+
+	public function logout(){
+		$this->session->sess_destroy();
+		$this->load->view('template/login');
+	}
+	
 	public function login()
 	{
 		$msg['status']=true;
@@ -51,20 +77,7 @@ class Controller_usuario extends CI_Controller {
 		echo json_encode($msg);
 	}
 
-	public function dashboard(){
-		if($this->session->userdata('usuario')>0){
-			$this->load->view('template/header');
-			$this->load->view('index');
-			$this->load->view('template/footer');
-		}else{
-			$this->load->view('template/login');
-		}
-	}
-
-	public function logout(){
-		$this->session->sess_destroy();
-		$this->load->view('template/login');
-	}
+	
 
 
 }

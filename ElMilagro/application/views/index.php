@@ -28,12 +28,12 @@
 						<h4 class='col-md-12'><i class="fa fa-cube"></i> Materiales</h3>
 							<div class=''>
 								<div class="col-md-1 col-xs-4">
-									<a class="btn btn-app" data-toggle="modal" data-target="#modalAgregar">
+									<a class="btn btn-app" id='btModalIn'>
 										<i class="glyphicon glyphicon-plus"></i>Entrada
 									</a>
 								</div>
 								<div class="col-md-1 col-xs-4">
-									<a class="btn btn-app" id='btIngresarMaterial'>
+									<a class="btn btn-app" href="<?php print site_url()?>/salidaMaterial" >
 										<i class="fa fa-truck"></i> Salida
 									</a>
 								</div>
@@ -63,7 +63,7 @@
 							<div class="row">
 								<h4 class='col-md-12'><i class="fa fa-user"></i> Usuarios</h3>
 									<div class="col-md-1 col-xs-4">
-										<a class="btn btn-app">
+										<a class="btn btn-app" href="<?php print site_url()?>/ingresoPersonal" >
 											<i class="fa fa-user-plus"></i> Usuarios
 										</a>
 									</div>
@@ -107,7 +107,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="entradaCodigo">Código</label>
-										<input type="input" class="form-control" readonly="true" id="entradaCodigo" placeholder="Escanear con pistola">
+										<input type="number" class="form-control"  maxlength="20" id="entradaCodigo" placeholder="Escanear con pistola">
 									</div>
 								</div>
 								<div class="col-md-6">
@@ -119,18 +119,36 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="tipo">Tipo stock </label>
-										<select class="select form-control" id='tipoStock'>
-											<option selected="true" disabled="true">Seleccionar</option>
-											<option>Unidad</option>
-											<option>Caja</option>
-											<option>Kilo</option>
+										<select class="select form-control" id='tipoStockEntrada'>
+											<option value="0" selected="true" disabled="true">Seleccionar</option>
+											<option value="1">Unidad</option>
+											<option value="2">Caja</option>
+											<option value="3">Kilo</option>
 										</select>
 									</div>
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-2">
 									<div class="form-group">
-										<label for="stockEntrada">Cantidad Ingresada</label>
-										<input type="number" class="form-control" id="stockEntrada">
+										<label for="stockEntrada">Cantidad</label>
+										<input type="number" class="form-control" min="1" value="1" id="stockEntrada">
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<label for="stockEntrada">Más</label>
+										<button class="btn btn-primary btn-block" id='masCantidad' type="button"><i class="fa fa-plus"></i></button>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<label for="stockEntrada">Menos</label>
+										<button class="btn btn-danger btn-block" id='menosCantidad' type="button" ><i class="fa fa-minus"></i></button>
+									</div>
+								</div>
+								<div class="col-md-6 stockDiv hidden">
+									<div class="form-group">
+										<label for="stockEntrada">Stock en bodega</label>
+										<input type="number" class="form-control" id="stockBodega">
 									</div>
 								</div>
 							</div>
@@ -138,7 +156,7 @@
 					</div>
 					<div class="modal-footer">
 						<div class="pull-left">
-							<button type="button" id="aceptar" class="btn btn-primary" >Aceptar</button>	
+							<button type="button" id="btAgregar" class="btn btn-primary" >Aceptar</button>	
 						</div>
 						<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 					</div>
@@ -148,106 +166,45 @@
 		</div>
 
 
-<!-- Modal -->
-		<div id="modalSalida" class="modal fade" role="dialog">
-			<div class="modal-dialog">
-
-				<!-- Modal content-->
-				<div class="modal-content">
-					<div class="modal-header bg-red">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">Salida de material</h4>
-					</div>
-					<div class="modal-body">
-						<div class="container-fluid">
-							<div class="row">
-								<div class="col-md-12">
-									<div class="form-group">
-										<label for="entradaCodigo">Código</label>
-										<input type="input" class="form-control" readonly="true" id="entradaCodigo" placeholder="Escanear con pistola">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="Nombre">Nombre</label>
-										<input type="input" class="form-control" id="nombreEntrada" placeholder="Panel, pintura">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="tipo">Tipo stock </label>
-										<select class="select form-control" id='tipoStock'>
-											<option selected="true" disabled="true">Seleccionar</option>
-											<option>Unidad</option>
-											<option>Caja</option>
-											<option>Kilo</option>
-										</select>
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label>Stock disponible</label>
-										<input type="number" class="form-control" readonly="true
-										">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="stockEntrada">Cantidad solicitada</label>
-										<input type="number" class="form-control" id="stockEntrada">
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<label for="stockEntrada">Jefe de obra</label>
-										<br/>
-										<select id='jefeDeObra' class="select2 form-control" style="width: 100%;">
-											
-										</select>
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="stockEntrada">Proyecto</label>
-										<select id='proyecto' class="form-control">
-											
-										</select>
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="stockEntrada">Beneficiarío</label>
-										<select id='Beneficiario' class="form-control">
-											
-										</select>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<div class="pull-left">
-							<button type="button" id="aceptar" class="btn btn-primary" >Aceptar</button>	
-						</div>
-						<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-					</div>
-				</div>
-
-			</div>
-		</div>
-
-
-
-<script type="text/javascript">
-	$(function(){
-		
-		$('body').on('click','#btIngresarMaterial',function(e){
-			$('#modalSalida').modal('show');
-			$('#jefeDeObra').select2();
-			cargarSelectJefes('jefeDeObra');
-		});
 		
 
-	});
 
-</script>
+		<!--script para ingreso de materiales-->
+		<script type="text/javascript">
+			$(function(){
+
+				$('body').on('click','#btModalIn',function(e){
+					$('#entradaCodigo').val('').attr('autofocus',true);
+					$('.stockDiv').removeClass('show').addClass('hidden');
+					$('#nombreEntrada').val('').attr('readonly', false);
+					$('#stockBodega').val('').attr('readonly', false);
+					$('#tipoStockEntrada').attr('disabled',false);
+					$('#modalAgregar').modal('show');
+				})
+
+				$('body').on('change','#entradaCodigo',function (e){
+					buscarMaterial(this.value);
+				});
+
+				$('body').on('click','#btAgregar',function(e){
+					e.preventDefault();
+					ingresarMaterial();
+				});
+
+				$('body').on('click','#masCantidad',function (e){
+					var cantidad = $('#stockEntrada').val();
+					$('#stockEntrada').val(parseInt(cantidad)+1);
+				});
+
+				$('body').on('click','#menosCantidad',function (e){
+					var cantidad = $('#stockEntrada').val();
+					var num = parseInt(cantidad)-1;
+					if(num >= 1){
+						$('#stockEntrada').val(num);
+					}
+					
+				});
+
+			});
+		</script>
+		

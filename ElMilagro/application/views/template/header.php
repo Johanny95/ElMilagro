@@ -132,6 +132,7 @@ $usuario = $this->session->userdata('usuario');
       <!--funciones propias y de rut-->
       <script src="<?php echo base_url();?>resources/funciones/misfunciones.js"></script>
       <script src="<?php echo base_url();?>resources/funciones/jquery.rut.chileno.min.js"></script>
+      <script src="<?php echo base_url();?>resources/funciones/funciones_materiales.js"></script>
 
         
       <title>Ménu | El Milagro EIRL</title>
@@ -244,8 +245,8 @@ $usuario = $this->session->userdata('usuario');
                 </span>
               </a>
               <ul class="treeview-menu">
-                <li><a href="<?php print site_url()?>/mantenedor"><i class="fa fa-plus"></i><span>Entrada</span></a></li>
-                <li><a href="<?php print site_url()?>/mantenedor"><i class="fa fa-truck"></i><span>Salida</span></a></li>
+                <li><a href="<?php print site_url()?>/dashboard"><i class="fa fa-plus"></i><span>Entrada</span></a></li>
+                <li><a href="<?php print site_url()?>/salidaMaterial"><i class="fa fa-truck"></i><span>Salida</span></a></li>
                 <li><a href="<?php print site_url()?>/mantenedor"><i class="fa fa-list-ol"></i><span>Stock</span></a></li>
               </ul>
 
@@ -273,9 +274,22 @@ $usuario = $this->session->userdata('usuario');
                 </span>
               </a>
               <ul class="treeview-menu">
-                <li><a href="<?php echo site_url()?>/charts"><i class="fa fa-user-plus"></i><span>Ingresar usuarios</span></a></li>
+                <li><a href="<?php echo site_url()?>/ingresoPersonal"><i class="fa fa-user-plus"></i><span>Ingresar usuarios</span></a></li>
               </ul>
             </li>
+            <li class="header">Proyectos</li>
+
+            <li class="treeview">
+              <a href="#"><i class="fa fa-folder"></i> <span>Proyectos y recursos</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="<?php echo site_url()?>/charts"><i class="fa fa-folder-open"></i><span>Ingresar proyecto</span></a></li>
+              </ul>
+            </li>
+
             <?php }?>
 
             

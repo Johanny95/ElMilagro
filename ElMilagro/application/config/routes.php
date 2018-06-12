@@ -57,6 +57,14 @@ $route['translate_uri_dashes'] = FALSE;
 $route['login'] 			= 'Controller_usuario/login';
 $route['dashboard']			= 'Controller_usuario/dashboard';
 $route['logout']			= 'Controller_usuario/logout';
-
 //Ingreso de materiales
 $route['selectJefes'] 		= 'Controller_materiales/getJefesDeObra';
+$route['buscarMaterial']	= 'Controller_materiales/buscarProducto';
+$route['ingresarMaterial']	= 'Controller_materiales/ingresarMaterial';
+//salida de materiales
+$route['salidaMaterial']	= 'Controller_materiales/salidaMaterial';
+$route['getProyectos']		= 'Controller_materiales/getProyectos';
+$route['getBeneficiarios']	= 'Controller_materiales/getBeneficiarios';
+$route['insertarPedido']	= 'Controller_materiales/insertarPedido';
+//Modulo usuarios
+$route['ingresoPersonal']	= 'Controller_usuario/modulo_usuario';
