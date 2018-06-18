@@ -39,7 +39,7 @@
 								</div>
 							</div>
 							<div class="col-md-1 col-xs-4">
-								<a class="btn btn-app">
+								<a class="btn btn-app" href="<?php print site_url()?>/stockMaterial">
 									<i class="fa fa-list-ol"></i> Stock
 								</a>
 							</div>
@@ -107,7 +107,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="entradaCodigo">Código</label>
-										<input type="number" class="form-control"  maxlength="20" id="entradaCodigo" placeholder="Escanear con pistola">
+										<input type="input" class="form-control"  maxlength="20" id="entradaCodigo" placeholder="Escanear con pistola">
 									</div>
 								</div>
 								<div class="col-md-6">

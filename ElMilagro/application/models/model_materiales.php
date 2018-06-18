@@ -18,7 +18,29 @@ class model_materiales extends CI_Model {
 		FROM	MATERIAL M,
 		TIPO_STOCK T
 		WHERE 	M.TIPO_STOCK = T.ID_TIPO_STOCK
-		AND   	M.ID_RECURSO   = $codigo";
+		AND   	M.ID_RECURSO   = '$codigo'";
+		$query = $this->db->query($str_sql);
+		$result  = $query->result();
+		return $result;
+	}
+
+	function getMateriales(){
+		$str_sql="SELECT 	M.ID_RECURSO,
+							M.NOMBRE,
+							M.STOCK,
+							TP.NOMBRE_STOCK TIPO_STOCK,
+							CONCAT(U.NOMBRE_USUARIO,CONCAT(' ',U.APELLIDO_USUARIO)) USUARIO,
+							M.CREATE_DATE CREACION,
+							M.LAST_UPDATE_BY MODIFICACION,
+							CASE
+								WHEN m.STOCK < 15 THEN 'Crítico'
+								WHEN m.STOCK <= 30 THEN 'Bajo'
+								ELSE 'Alto'
+							END AS ESTADO
+		FROM 	MATERIAL M, USUARIO U , TIPO_STOCK TP
+		WHERE 	M.CREATE_BY 		= U.RUT_USUARIO
+		AND		TP.ID_TIPO_STOCK	= M.TIPO_STOCK
+		AND 	M.DELETE_DATE IS NULL";
 		$query = $this->db->query($str_sql);
 		$result  = $query->result();
 		return $result;

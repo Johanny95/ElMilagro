@@ -66,5 +66,12 @@ $route['salidaMaterial']	= 'Controller_materiales/salidaMaterial';
 $route['getProyectos']		= 'Controller_materiales/getProyectos';
 $route['getBeneficiarios']	= 'Controller_materiales/getBeneficiarios';
 $route['insertarPedido']	= 'Controller_materiales/insertarPedido';
+$route['stockMaterial']		= 'Controller_materiales/stockMaterial';
 //Modulo usuarios
 $route['ingresoPersonal']	= 'Controller_usuario/modulo_usuario';
+$route['addUsuario']		= 'Controller_usuario/addUsuario';
+$route['getListadoUsuarios']= 'Controller_usuario/getListadoUsuarios';
+//reportes
+$route['charts']			= 'Controller_reportes/trazaMateriales';
+$route['getDataChart']		= 'Controller_reportes/getTrazaMateriales';
+$route['prueba']			= 'Controller_reportes/prueba';

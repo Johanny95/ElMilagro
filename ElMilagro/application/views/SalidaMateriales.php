@@ -16,7 +16,7 @@
 		<!-- Default box -->
 		<div class="box">
 			<div class="box-header with-border">
-				<h3 class="box-title"><i class="fa fa-list"></i> Ménu de actvidades</h3>
+				<h3 class="box-title"><i class="fa fa-cubes"></i> Salida de materiales</h3>
 				<div class="box-tools pull-right">
 					<a href="javascript:history.back()" class="btn btn-box-tool pull-right"><i class="fa fa-reply pull-left"></i>Volver Atrás</a>
 				</div>
@@ -224,21 +224,18 @@
 		});
 
 		$('body').on('change','#codigoSalida',function(e){
-			buscarMaterial($('#codigoSalida').val());
+			buscarMaterialSalida($('#codigoSalida').val());
 			$('#divDetalle').removeClass('hidden').addClass('show');
 		});
 
 		$('body').on('click','#btAceptarPedido',function(e){
 			insertarPedido();
 		});
-	
+
 
 		$('#tablaPedido tbody').on( 'click', 'button', function () {
 			var table = $('#tablaPedido').DataTable();
-			table
-			.row( $(this).parents('tr') )
-			.remove()
-			.draw();
+			table.row( $(this).parents('tr') ).remove().draw();
 		} );
 
 

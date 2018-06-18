@@ -33,6 +33,14 @@ class Controller_materiales extends CI_Controller {
 			$this->load->view('template/footer');
 		}
 	}
+	public function stockMaterial(){
+		if($this->session->userdata('usuario')>0){
+			$this->load->view('template/header');
+			$data['materiales'] = $this->model_materiales->getMateriales();
+			$this->load->view('stock_materiales',$data);
+			$this->load->view('template/footer');
+		}
+	}
 
 	public function getJefesDeObra(){
 		if($this->session->userdata('usuario')>0){
