@@ -67,11 +67,40 @@ $route['getProyectos']		= 'Controller_materiales/getProyectos';
 $route['getBeneficiarios']	= 'Controller_materiales/getBeneficiarios';
 $route['insertarPedido']	= 'Controller_materiales/insertarPedido';
 $route['stockMaterial']		= 'Controller_materiales/stockMaterial';
+//Editar material
+$route['editarMaterial']	= 'Controller_materiales/editarMaterial';
+
 //Modulo usuarios
 $route['ingresoPersonal']	= 'Controller_usuario/modulo_usuario';
 $route['addUsuario']		= 'Controller_usuario/addUsuario';
 $route['getListadoUsuarios']= 'Controller_usuario/getListadoUsuarios';
+$route['editarUsuario']		= 'Controller_usuario/editarUsuario';
 //reportes
 $route['charts']			= 'Controller_reportes/trazaMateriales';
 $route['getDataChart']		= 'Controller_reportes/getTrazaMateriales';
-$route['prueba']			= 'Controller_reportes/prueba';
+$route['reporteMateriales'] = 'Controller_reportes/reporteMateriales';
+$route['getReporteMaterial']= 'Controller_reportes/getReporteMaterial';
+//Proyectos
+$route['ingresoProyecto']	= 'Controller_proyecto/viewProyecto';
+$route['addProyecto']		= 'Controller_proyecto/addProyecto';
+$route['getProyectosTabla']	= 'Controller_proyecto/getListaProyecto';
+$route['editarProyecto']	= 'Controller_proyecto/editarProyecto';
+
+//beneficiario
+$route['ingresoBeneficiario']= 'Controller_beneficiario/moduloBeneficiario';
+$route['addBeneficiario']    = 'Controller_beneficiario/addBeneficiario';
+$route['listBeneficiarios']  = 'Controller_beneficiario/getBeneficiariosTabla';
+$route['editarBeneficiario'] = 'Controller_beneficiario/editarBeneficiario';
+
+
+//Ingreso de herramientas
+$route['ingresoHerramienta'] = 'Controller_herramienta/ingresoHerramienta';
+$route['SalidaHerramienta']	 = 'Controller_herramienta/SalidaHerramienta';
+$route['addHerramienta']	 = 'Controller_herramienta/addHerramienta';
+$route['getListadoHerramienta']	= 'Controller_herramienta/getListadoHerramienta';
+$route['modificarHerramienta']	= 'Controller_herramienta/modificarHerramienta';
+$route['buscarHerramienta']		= 'Controller_herramienta/buscarHerramienta';
+$route['insertarPedidoH']		= 'Controller_herramienta/insertarPedidoH';
+$route['herramientasPrestadas']	= 'Controller_herramienta/herramientasPrestadas';
+$route['getListadoHerramientaPrestadas']= 'Controller_herramienta/getListadoHerramientaPrestadas';
+$route['entregarHerramienta']			= 'Controller_herramienta/entregarHerramienta';

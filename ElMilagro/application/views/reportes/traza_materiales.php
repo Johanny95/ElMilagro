@@ -41,9 +41,14 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-12">
-							<div class="box-body chart-responsive">
-								<div class="chart" id="revenue-chart" style="height: 300px;"></div>
+						<div class="container-fluid">
+							<div class="col-md-12 hidden" id="divExportar">
+								<button type="button" id="bt_export" class="btn bg-navy" >Exportar grafico</button>
+							</div>
+							<div class="col-md-12">
+								<div class="box-body chart-responsive">
+										<div id="revenue-chart" style="height: 250px;"></div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -63,26 +68,25 @@
 </div>
 <!-- /.content-wrapper -->
 
+<script type="text/javascript" src="<?php echo base_url(); ?>resources/bootstrap/js/jszip.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>resources/bootstrap/js/FileSaver.js"></script>
 <script type="text/javascript">
 	$(function(){
-
-		
-
-
 
 		$('body').on('click','#btbuscar',function(){
 			var keys = [], material = [], muestra = [];
 			var seleccionadorMateriales = $('#materiales').val();
-			$.ajax({
-				url: '<?php echo site_url()?>/getDataChart',
-				type: 'POST',
-				dataType: 'json',
-				data : {'selectMaterial' : seleccionadorMateriales}
-			}).done(function(data) {
-				var fecha ='';
-				var array = {};
-				$.each(data.datos, function (i, obj) {
-					if($.inArray(obj.ID_MATERIAL, keys) < 0){
+			if(seleccionadorMateriales != ''){
+				$.ajax({
+					url: '<?php echo site_url()?>/getDataChart',
+					type: 'POST',
+					dataType: 'json',
+					data : {'selectMaterial' : seleccionadorMateriales}
+				}).done(function(data) {
+					var fecha ='';
+					var array = {};
+					$.each(data.datos, function (i, obj) {
+						if($.inArray(obj.ID_MATERIAL, keys) < 0){
 					material.push(obj.NOMBRE);//nombres para labeles
 					keys.push(obj.ID_MATERIAL);//da los codigos para agruparlos
 				}
@@ -100,13 +104,19 @@
 					array[obj.ID_MATERIAL] 	= obj.SUMA;
 				}
 			});
-				var color = ['#a0d0e0', '#3c8dbc','#000000','#aaaaaa'];
-				cargarChart(muestra,keys,material,color);
-			});
+					var color = ['#a0d0e0', '#3c8dbc','#0080ff','#aaaaaa','#08088a','#04b4ae',];
+					cargarChart(muestra,keys,material,color);
+				});
+			}else{
+				em_norify('Error','Seleccione al menos un material','danger');
+			}
+
+			
 		})
 	})
 
 	function cargarChart(datos,keys,label,color){
+		$("#revenue-chart").empty();
 		var area = new Morris.Area({
 			element: 'revenue-chart',
 			resize: true,
@@ -117,12 +127,20 @@
 			lineColors: color,
 			hideHover: 'auto'
 		});
+		//$('#divExportar').removeClass('hidden').addClass('');
 	}
 </script>
 <script type="text/javascript">
 	$(function(){
 		$(document).ready(function() {
 			$('.js-example-basic-multiple').select2();
+		});
+
+		
+		$('#bt_export').click(function(){
+			$('#revenue-chart').get(0).toBlob(function(blod){
+				saveAs(blod,'chart_1.png');
+			})
 		});
 	})
 </script>

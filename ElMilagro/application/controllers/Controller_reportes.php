@@ -35,6 +35,14 @@ class Controller_reportes extends CI_Controller {
 		}
 	}
 
+	public function reporteMateriales(){
+		if($this->session->userdata('usuario')>0){
+			$this->load->view('template/header');
+			$this->load->view('reportes/reporte_materiales');
+			$this->load->view('template/footer');
+		}	
+	}
+
 	public function getTrazaMateriales(){
 		if($this->session->userdata('usuario')>0){
 			$materiales 	= $this->input->post('selectMaterial');
@@ -43,7 +51,35 @@ class Controller_reportes extends CI_Controller {
 		}	
 	}
 
-	public function prueba(){
-		echo json_encode($this->input->post('muestra'));
+	public function getReporteMaterial(){
+		$msg['status']		=true;
+		$msg['error']	= '';
+		if($this->session->userdata('usuario')>0){
+				$this->form_validation->set_rules('proyecto', 'Proyecto', 'required|max_length[50]');
+				$this->form_validation->set_rules('benef_id', 'Beneficiario', 'required|max_length[50]');
+				$this->form_validation->set_rules('benef_rut','Beneficiario rut', 'required|max_length[50]');
+
+				if($this->form_validation->run()==FALSE){
+					$msg['status']	=	FALSE;
+					$msg['error']	=	validation_errors();
+				}else{
+					$proyecto 		= $this->input->post('proyecto');
+					$benef_id	= $this->input->post('benef_id');
+					$benef_rut	= $this->input->post('benef_rut');
+					$res 		= $this->model_reportes->getListMaterialesBeneficiario($proyecto,$benef_id,$benef_rut);
+					if(empty($res)){
+						$msg['status'] 	= false;
+						$msg['error']	= 'No hay registros para lo seleccionado';
+					}else{
+						$msg['datos']	= $res;
+					}
+				}
+		}else{
+			$msg['status'] 		= false;
+			$msg['error'] 		= 'Sesión caducada, recargar página';
+		}
+		echo json_encode($msg);
 	}
+
+
 }

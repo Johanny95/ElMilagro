@@ -58,11 +58,13 @@ class model_usuario extends CI_Model {
 
 	function getListadoUsuarios(){
 		$str_sql="SELECT 	U.RUT_USUARIO,
-		CONCAT(U.NOMBRE_USUARIO,CONCAT(' ',U.APELLIDO_USUARIO)) NOMBRE,
+		U.NOMBRE_USUARIO NOMBRE,
+		U.APELLIDO_USUARIO APELLIDO,
 		U.CORREO,
-		DIRECCION,
+		U.DIRECCION,
 		U.TELEFONO,
-		R.NOMBRE_ROL
+		R.NOMBRE_ROL,
+		R.ID_ROL
 		FROM 
 		USUARIO U, ROL_USER RU, ROL R 
 		WHERE U.RUT_USUARIO = RU.RUT_USUARIO
@@ -71,6 +73,27 @@ class model_usuario extends CI_Model {
 		$query = $this->db->query($str_sql);
 		$result  = $query->result();
 		return $result;
+	}
+
+	function editarUsuario($rut,$nombre,$apellido,$rol,$telefono,$correo,$direccion,$usuario){
+		$this->db->trans_start();
+		$this->db->set('NOMBRE_USUARIO'      , $nombre);
+		$this->db->set('APELLIDO_USUARIO'    , $apellido);
+		$this->db->set('TELEFONO'       	 , $telefono);
+		$this->db->set('CORREO'       	 	 , $correo);
+		$this->db->set('DIRECCION'       	 , $direccion);
+		$this->db->set('LAST_UPDATE_BY'   	 , date('Y-m-d H:i:s'));
+		$this->db->set('UPDATE_BY' 	    	 , $usuario);
+		$this->db->where('RUT_USUARIO'   	 , $rut);
+		$this->db->update('USUARIO');
+		if ($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+			return FALSE;
+		}else{
+			$this->db->trans_commit();
+			return TRUE;
+		}
 	}
 
 	function addUsuario($rut,$nombre,$apellido,$fechaNacimiento,$rol,$direccion,$telefono,$correo,$usuario){

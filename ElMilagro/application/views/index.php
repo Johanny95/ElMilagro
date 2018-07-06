@@ -47,16 +47,21 @@
 						<div class="row">
 							<h4 class='col-md-12'><i class="fa fa-wrench"></i> Herramientas</h3>
 								<div class="col-md-1 col-xs-4">
-									<a class="btn btn-app">
-										<i class="fa fa-plus"></i> Entrada
-									</a>
-								</div>
+										<a class="btn btn-app" href="<?php print site_url()?>/ingresoHerramienta">
+											<i class="fa fa-plus"></i> Entrada
+										</a>
+									</div>
 
-								<div class="col-md-1 col-xs-4">
-									<a class="btn btn-app">
-										<i class="fa fa-truck"></i> Salida
-									</a>
-								</div>
+									<div class="col-md-1 col-xs-4">
+										<a class="btn btn-app" href="<?php print site_url()?>/SalidaHerramienta">
+											<i class="fa fa-truck"></i> Salida
+										</a>
+									</div>
+									<div class="col-md-1 col-xs-4">
+										<a class="btn btn-app" href="<?php print site_url()?>/herramientasPrestadas">
+											<i class="fa fa-truck"></i> Prestadas
+										</a>
+									</div>
 							</div>
 							<?php } ?><!--VALIDACION DE PERMISOS-->
 							<?php if($usuario[0]->ID_ROL == 1 ){?>

@@ -70,7 +70,7 @@ function ingresarMaterial(){
 		var tipoStock   = $('#tipoStockEntrada option:selected').text();
 		var t = $('#tablaPedido').DataTable();
 		if(codigo != '' && nombre != ''){
-			if(cantidad >= 0){
+			if(cantidad >= 1){
 				if(cantidad <= stock){
 					var rowCount = $('#tbodyPedido tr').length;
 					t.row.add( [
@@ -113,20 +113,68 @@ function ingresarMaterial(){
 			type: 'POST',
 			dataType: 'json',
 			data: {	jefeDeObra 	: jefeDeObra,
-					proyecto   	: proyecto,
-					beneficiario: beneficiario,
-					pedido    	: lista},
-		}).done(function(data) {
-			if(data.status){
-				var t = $('#tablaPedido').DataTable();
-				$('#divPedido').removeClass('show').addClass('hidden');
-				$('#modalSalida').modal('hide');
-				t.clear();
-				em_notify('Correcto','Pedido registrado','success');
-				document.getElementById("codigoSalida").focus();
-			}else{
-				em_notify('Error',data.error,'danger');
-			}
-		});
-	}
+				proyecto   	: proyecto,
+				beneficiario: beneficiario,
+				pedido    	: lista},
+			}).done(function(data) {
+				if(data.status){
+					var t = $('#tablaPedido').DataTable();
+					$('#divPedido').removeClass('show').addClass('hidden');
+					$('#modalSalida').modal('hide');
+					t.clear();
+					em_notify('Correcto','Pedido registrado','success');
+					document.getElementById("codigoSalida").focus();
+				}else{
+					em_notify('Error',data.error,'danger');
+				}
+			});
+		}
 
+
+		function cargarProyectoSelect(){
+			$.ajax({
+				url: ruta+'getProyectosTabla',
+				type: 'POST',
+				dataType: 'json'
+			})
+			.done(function(data) {
+				$('#proyectos').empty();
+				var fila = '<option selected disabled="true">Seleccionar proyecto</option>';
+				$.each(data.datos , function(i, obj) {
+					fila+='<option value="'+obj.ID_PROYECTO+'">'+obj.NOMBRE+'</option>';
+				});
+				$('#proyectos').append(fila);
+			});
+		}
+
+	//reporte materiales
+
+	function reporteMaterialesBeneficiario(proyecto,beneficiario){
+		var array = beneficiario.split(',');
+		$.ajax({
+			url: ruta+'getReporteMaterial',
+			type: 'POST',
+			dataType: 'json',
+			data: {	proyecto 	 : proyecto,
+				benef_id : array[0],
+				benef_rut: array[1]},
+			}).done(function(data) {
+				if(data.status){
+					var t = $('#tablaReporte').DataTable();
+					t.clear();
+					$.each(data.datos, function(index, obj) {
+						t.row.add( [
+							obj.ID_MATERIAL,
+							obj.NOMBRE,
+							obj.TOTAL+' '+obj.NOMBRE_STOCK,
+							obj.JEFE+' '+obj.RUT_USUARIO
+							] ).draw( true );
+						$('#divReporte').removeClass('hidden').addClass('show');
+					});
+				}else{
+					em_notify('Notificación',data.error,'info');
+					$('#divReporte').removeClass('show').addClass('hidden');
+				}
+			});
+
+		}

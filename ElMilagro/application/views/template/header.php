@@ -135,10 +135,15 @@ $usuario = $this->session->userdata('usuario');
     <script src="<?php echo base_url();?>resources/funciones/misfunciones.js"></script>
     <script src="<?php echo base_url();?>resources/funciones/jquery.rut.chileno.min.js"></script>
     <script src="<?php echo base_url();?>resources/funciones/funciones_materiales.js"></script>
+    <script src="<?php echo base_url();?>resources/funciones/funciones_herramientas.js"></script>
+
     <!--JS morris-->
     <!-- Morris.js charts -->
     <script src="<?php echo base_url(); ?>resources/bower_components/raphael/raphael.min.js"></script>
     <script src="<?php echo base_url(); ?>resources/bower_components/morris.js/morris.min.js"></script>
+    <!--filesaver-->
+    <script type="text/javascript" src="<?php echo base_url(); ?>resources/bootstrap/js/jszip.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>resources/bootstrap/js/FileSaver.js"></script>
 
 
     <title>Ménu | El Milagro EIRL</title>
@@ -265,13 +270,13 @@ $usuario = $this->session->userdata('usuario');
               </span>
             </a>
             <ul class="treeview-menu">
-              <li><a href="<?php print site_url()?>/subirArchivo"><i class="fa fa-plus"></i><span>Ingresar</span></a></li>
-              <li><a href="<?php print site_url()?>/subirArchivo"><i class="fa fa-truck"></i><span>Prestación</span></a></li>
+              <li><a href="<?php print site_url()?>/ingresoHerramienta"><i class="fa fa-plus"></i><span>Ingresar</span></a></li>
+              <li><a href="<?php print site_url()?>/SalidaHerramienta"><i class="fa fa-truck"></i><span>Prestación</span></a></li>
+              <li><a href="<?php print site_url()?>/herramientasPrestadas"><i class="fa fa-truck"></i><span>Prestadas</span></a></li>
             </ul>
           </li>
           <?php }?>
           <?php if($usuario[0]->ID_ROL == 1 ){?>
-          <li class="header">Usuarios y permisos</li>
 
           <li class="treeview">
             <a href="#"><i class="fa fa-user"></i> <span>Usuarios</span>
@@ -283,27 +288,28 @@ $usuario = $this->session->userdata('usuario');
               <li><a href="<?php echo site_url()?>/ingresoPersonal"><i class="fa fa-user-plus"></i><span>Ingresar usuarios</span></a></li>
             </ul>
           </li>
-          <li class="header">Proyectos</li>
           <li class="treeview">
-            <a href="#"><i class="fa fa-folder"></i> <span>Proyectos y recursos</span>
+            <a href="#"><i class="fa fa-folder"></i> <span>Proyectos y beneficiarios</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
-              <li><a href="<?php echo site_url()?>/charts"><i class="fa fa-folder-open"></i><span>Ingresar proyecto</span></a></li>
+              <li><a href="<?php echo site_url()?>/ingresoProyecto"><i class="fa fa-folder-open"></i><span>Ingresar proyecto</span></a></li>
+              <li><a href="<?php echo site_url()?>/ingresoBeneficiario"><i class="fa fa-users"></i><span>Ingresar beneficiarios</span></a></li>
             </ul>
           </li>
-          <li class="header">Reportes</li>
+          
 
           <li class="treeview">
-            <a href="#"><i class="fa fa-folder"></i> <span>Trazabilidad de materiales</span>
+            <a href="#"><i class="fa fa-bar-chart-o"></i> <span>Reportes</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
-              <li><a href="<?php echo site_url()?>/charts"><i class="fa fa-folder-open"></i><span>Ver tranzabilidad</span></a></li>
+              <li><a href="<?php echo site_url()?>/charts"><i class="fa fa-line-chart"></i><span>Ver tranzabilidad</span></a></li>
+              <li><a href="<?php echo site_url()?>/reporteMateriales"><i class="fa fa-archive"></i><span>Reporte por beneficiario</span></a></li>
             </ul>
           </li>
 

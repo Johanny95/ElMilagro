@@ -17,7 +17,7 @@ class Controller_usuario extends CI_Controller {
 	 * So any other public methods not prefixed with an underscore will
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
+	 */ 
 
 	public function __construct()
 	{
@@ -52,8 +52,8 @@ class Controller_usuario extends CI_Controller {
 	}
 
 	public function getListadoUsuarios(){
-			$data = $this->model_usuario->getListadoUsuarios();
-			echo json_encode($data);
+		$data = $this->model_usuario->getListadoUsuarios();
+		echo json_encode($data);
 	}
 	
 	public function login()
@@ -129,6 +129,46 @@ class Controller_usuario extends CI_Controller {
 		}else{
 			$msg['status']= false;
 			$msg['error'] = 'La sesión ha caducado, ingrese nuevamente. Recarge la página.';
+		}
+		echo json_encode($msg);
+	}
+
+	public function editarUsuario(){
+		$msg['status']		=true;
+		$msg['error']	= '';
+		if($this->session->userdata('usuario')>0){
+			if($this->input->post()){
+				$this->form_validation->set_rules('rut', 'Rut', 'trim|required|max_length[50]');
+				$this->form_validation->set_rules('nombre', 'Nombre', 'required|max_length[100]');
+				$this->form_validation->set_rules('apellido', 'Apellido', 'required|max_length[100]');
+				$this->form_validation->set_rules('rol', 'Rol', 'required|max_length[4]');
+				$this->form_validation->set_rules('telefono', 'Teléfono', 'required|max_length[20]');
+				$this->form_validation->set_rules('correo', 'Correo', 'required|max_length[100]');
+				$this->form_validation->set_rules('direccion', 'Dirección', 'required|max_length[255]');
+				if($this->form_validation->run()==FALSE){
+					$msg['status']	=	FALSE;
+					$msg['error']	=	validation_errors();
+				}else{
+					$rut 			= $this->input->post('rut');
+					$nombre 		= $this->input->post('nombre');
+					$apellido 		= $this->input->post('apellido');
+					$rol 	 		= $this->input->post('rol');
+					$telefono 		= $this->input->post('telefono');
+					$correo 		= $this->input->post('correo');
+					$direccion 		= $this->input->post('direccion');
+					$usuario 		= $this->session->userdata('usuario');
+					$res 			= $this->model_usuario->editarUsuario($rut,$nombre,$apellido,$rol,$telefono,$correo,$direccion,$usuario[0]->RUT_USUARIO);
+					if(!$res){
+						$msg['status'] 	= false;
+					}
+				}
+			}else{
+				$msg['status'] 	= false;
+				$msg['error'] 	= 'input';
+			}
+		}else{
+			$msg['status'] 		= false;
+			$msg['error'] 		= 'Sesión caducada, recargar página';
 		}
 		echo json_encode($msg);
 	}

@@ -2,7 +2,7 @@
 <!-- Content Wrapper. Contains page content -->
 
 <style type="text/css" media="screen">
-.imgslide{width: 500px;height: 1200px;}
+.imgslide{width: 500px;height: 1200px;} 
 </style>
 <div class="content-wrapper">
 	<!-- Content Header (Page header) -->
@@ -158,6 +158,84 @@
 </div>
 <!-- /.content-wrapper -->
 
+<!-- Modal -->
+<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header bg-blue">
+				<h4 class="modal-title" id="exampleModalLongTitle">Editar usuario</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<!--Formulario modificar material-->
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label>Rut usuario</label>
+								<input id='rut' name="rut" readonly type="text" class="form-control" >
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label>Nombre</label>
+								<input id='nombre' name="nombre" type="text" class="form-control" >
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label>Apellido</label>
+								<input id='apellido' name="apellido" type="text" class="form-control" >
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Rol usuario</label>
+								<select class="form-control" name="rol" id="rol">
+									<option disabled selected>Seleccionar rol</option>
+									<?php foreach ($roles as $key): ?>
+										<option value="<?php echo $key->ID_ROL?>"><?php echo $key->NOMBRE_ROL?></option>
+									<?php endforeach ?>
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label>Teléfono</label>
+								<input id='telefono' name="telefono" type="text" class="form-control" >
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label>Correo</label>
+								<input id='correo' name="correo" type="text" class="form-control" >
+							</div>
+						</div>
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label>Dirección</label>
+								<input id='direccion' name="direccion" type="text" class="form-control" >
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+				<button type="button" id="btEditar" class="btn btn-primary">Guardar cambios</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 <script type="text/javascript">
 	$(function(){
 		
@@ -171,6 +249,29 @@
 			this.value = $.rut.formatear(this.value);
 		});
 
+		$('#tablaUsuarios tbody').on( 'click', '.edit', function () {
+			var datos = this.value.split(',');
+			$('#rut').val(datos[0]);
+			$('#nombre').val(datos[1]);
+			$('#apellido').val(datos[2]);
+			$('#rol').append('<option selected value="'+datos[4]+'">'+datos[3]+'</option>');
+			$('#telefono').val(datos[5]);
+			$('#correo').val(datos[6]);
+			$('#direccion').val(datos[7]);
+			$('#modalEdit').modal('show');
+		} );
+
+		$('body').on('click','#btEditar',function(){
+			var rut 		= $('#rut').val();
+			var nombre 		= $('#nombre').val();
+			var apellido 	= $('#apellido').val();
+			var rol 		= $('#rol').val();
+			var telefono 	= $('#telefono').val();
+			var correo 	 	= $('#correo').val();
+			var direccion 	= $('#direccion').val();
+			editarUsuario(rut,nombre,apellido,rol,telefono,correo,direccion);
+		});
+
 	})
 </script>
 
@@ -182,24 +283,24 @@
 			if($.rut.validar(rut)){
 				var url            = $('#formUsuario').attr('action');
 				var formulario     = new FormData(document.getElementById("formUsuario"));				
-					$.ajax({
-						url: url,
-						type: 'POST',
-						dataType: 'json',
-						data: formulario,
-						processData: false,
-						contentType: false,
-						cache: false,
-						async: false
-					}).done(function(data){
-						if(data.status){
-							em_notify('Registrado','El usuario ha sido registrado con exito','success');
-							 $('#formUsuario')[0].reset();
-							 cargarlistaUsuarios();
-						}else{
-							em_notify('Error',data.error,'danger');
-						}
-					});
+				$.ajax({
+					url: url,
+					type: 'POST',
+					dataType: 'json',
+					data: formulario,
+					processData: false,
+					contentType: false,
+					cache: false,
+					async: false
+				}).done(function(data){
+					if(data.status){
+						em_notify('Registrado','El usuario ha sido registrado con exito','success');
+						$('#formUsuario')[0].reset();
+						cargarlistaUsuarios();
+					}else{
+						em_notify('Error',data.error,'danger');
+					}
+				});
 			}else{
 				em_notify('Error','Rut no valido','danger');
 			}
@@ -217,11 +318,11 @@
 			$.each(data, function (i, obj) {
 				t.row.add( [
 					obj.RUT_USUARIO,
-					obj.NOMBRE,
+					obj.NOMBRE+' '+obj.APELLIDO,
 					obj.NOMBRE_ROL,
 					obj.TELEFONO,
 					obj.CORREO,
-					'<button class="btn btn-sm" data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-edit"></i></button>'
+					'<button class="btn btn-sm edit" value="'+obj.RUT_USUARIO+','+obj.NOMBRE+','+obj.APELLIDO+','+obj.NOMBRE_ROL+','+obj.ID_ROL+','+obj.TELEFONO+','+obj.CORREO+','+obj.DIRECCION+'" data-toggle="tooltip" data-placement="top" title="Modificar"><i class="fa fa-edit"></i></button>'
 					] ).draw( true );
 			});
 		},'json');
@@ -236,7 +337,7 @@
 			"ordering" : true,
 			"info" : true,
 			"autoWidth" : false,
-			"iDisplayLength": -1,
+			"iDisplayLength": 5,
 			"columnDefs": [
 			{ targets: 'no-sort', orderable: false },
 			{ className: "text-center", "targets": [5]},

@@ -29,6 +29,7 @@ class model_materiales extends CI_Model {
 							M.NOMBRE,
 							M.STOCK,
 							TP.NOMBRE_STOCK TIPO_STOCK,
+							TP.ID_TIPO_STOCK,
 							CONCAT(U.NOMBRE_USUARIO,CONCAT(' ',U.APELLIDO_USUARIO)) USUARIO,
 							M.CREATE_DATE CREACION,
 							M.LAST_UPDATE_BY MODIFICACION,
@@ -44,6 +45,24 @@ class model_materiales extends CI_Model {
 		$query = $this->db->query($str_sql);
 		$result  = $query->result();
 		return $result;
+	}
+
+	function editarMaterial($codigo,$nombre,$tipoStock,$usuario){
+		$this->db->trans_start();
+			$this->db->set('NOMBRE'       	 	 , $nombre);
+			$this->db->set('TIPO_STOCK'     	 , $tipoStock);
+			$this->db->set('LAST_UPDATE_BY'   	 , date('Y-m-d H:i:s'));
+			$this->db->set('UPDATE_BY' 	    	 , $usuario);
+			$this->db->where('ID_RECURSO'   	 , $codigo);
+			$this->db->update('MATERIAL');
+			if ($this->db->trans_status() === FALSE)
+			{
+				$this->db->trans_rollback();
+				return FALSE;
+			}else{
+				$this->db->trans_commit();
+				return TRUE;
+			}
 	}
 
 	function insertMaterial($codigo,$nombre,$cantidad,$tipo_stock,$usuario){

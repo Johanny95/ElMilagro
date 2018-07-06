@@ -169,5 +169,37 @@ class Controller_materiales extends CI_Controller {
 	}
 
 
+	public function editarMaterial(){
+		$msg['status']		=true;
+		$msg['error']	= '';
+		if($this->session->userdata('usuario')>0){
+			if($this->input->post()){
+				$this->form_validation->set_rules('codigo', 'Código', 'required|max_length[50]');
+				$this->form_validation->set_rules('nombre', 'Nombre', 'required|max_length[20]');
+				$this->form_validation->set_rules('tipoStock', 'Tipo Stock', 'trim|required|max_length[50]');
+				if($this->form_validation->run()==FALSE){
+					$msg['status']	=	FALSE;
+					$msg['error']	=	validation_errors();
+				}else{
+					$codigo 		= $this->input->post('codigo');
+					$nombre 		= $this->input->post('nombre');
+					$tipoStock 		= $this->input->post('tipoStock');
+					$usuario 		= $this->session->userdata('usuario');
+					$res 			= $this->model_materiales->editarMaterial($codigo,$nombre,$tipoStock,$usuario[0]->RUT_USUARIO);
+					if(!$res){
+						$msg['status'] 	= false;
+					}
+				}
+			}else{
+				$msg['status'] 	= false;
+				$msg['error'] 	= 'input';
+			}
+		}else{
+			$msg['status'] 		= false;
+			$msg['error'] 		= 'Sesión caducada, recargar página';
+		}
+		echo json_encode($msg);
+	}
+
 
 }
